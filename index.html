@@ -762,34 +762,19 @@ function playNote(){
 
 function startMusic(){
 
-  if(audio) return;
-
-  const AudioContext =
-    window.AudioContext ||
-    window.webkitAudioContext;
-
-  if(!AudioContext) return;
-
-  try{
-
-    audio = new AudioContext();
-    audio.resume();
-
-    musicStep = 0;
-
-    playNote();
-
-    musicTimer = setInterval(() => {
-      playNote();
-    },200);
-
-  }catch(error){
-
-    console.log('Audio no disponible:',error);
-
+  if(!window.jayroMusic){
+    window.jayroMusic = new Audio('ps1 Jayro.mp3');
+    window.jayroMusic.loop = true;
+    window.jayroMusic.volume = 0.7;
   }
-}
 
+  window.jayroMusic.currentTime = 0;
+
+  window.jayroMusic.play().catch(error => {
+    console.log('No se pudo reproducir el MP3:', error);
+  });
+
+}
 /* AVANZAR CARRUSEL SIEMPRE A LA DERECHA */
 
 function advanceCarousel(){
@@ -899,7 +884,6 @@ function startArcade(){
 }
 
 /* DETENER MUSICA Y MOVIMIENTO */
-
 function stopArcade(){
 
   arcadeRunning = false;
@@ -912,11 +896,9 @@ function stopArcade(){
 
   wrapping = false;
 
-  if(audio){
-
-    audio.close();
-    audio = null;
-
+  if(window.jayroMusic){
+    window.jayroMusic.pause();
+    window.jayroMusic.currentTime = 0;
   }
 
 }
