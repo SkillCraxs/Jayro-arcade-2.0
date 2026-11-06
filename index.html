@@ -759,22 +759,35 @@ function playNote(){
 }
 
 /* INICIAR MUSICA */
-
 function startMusic(){
 
+  const musicUrl =
+    'https://skillcraxs.github.io/Jayro-arcade-2.0/ps1%20Jayro.mp3';
+
   if(!window.jayroMusic){
-    window.jayroMusic = new Audio('ps1 Jayro.mp3');
+
+    window.jayroMusic = new Audio();
+
+    window.jayroMusic.src = musicUrl;
     window.jayroMusic.loop = true;
-    window.jayroMusic.volume = 0.7;
+    window.jayroMusic.volume = 1;
+    window.jayroMusic.preload = 'auto';
+
   }
 
+  window.jayroMusic.pause();
   window.jayroMusic.currentTime = 0;
 
-  window.jayroMusic.play().catch(error => {
-    console.log('No se pudo reproducir el MP3:', error);
-  });
+  const playback = window.jayroMusic.play();
 
-}
+  if(playback){
+    playback.catch(error => {
+      console.log('Error de reproducción:', error);
+    });
+  }
+
+    }
+
 /* AVANZAR CARRUSEL SIEMPRE A LA DERECHA */
 
 function advanceCarousel(){
